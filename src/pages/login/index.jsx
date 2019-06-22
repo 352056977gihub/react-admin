@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button,} from 'antd';
 
+import {reqLogin} from  '../../api'
 import logo from './logo.png';
 import './index.less';
 
@@ -9,9 +10,15 @@ const Item = Form.Item;
 class Login extends Component {
     handleSubmit=(e)=> {
         e.preventDefault();
-        this.props.form.validateFields((errors,values)=>{
+        this.props.form.validateFields(async (errors,values)=>{
            if(!errors){
-               this.props.history.push('/');
+               const { username, password} = values;
+               const data = await reqLogin( username, password)
+               if(data){
+                   this.props.history.replace('/');
+               }else {
+                   this.props.form.resetFields(['password'])
+               }
            }
         });
     }
@@ -45,7 +52,7 @@ class Login extends Component {
                                     rules: [
                                         { validator: this.validator}
                                         ]
-                            })( <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            })( <Input prefix={<Icon type="user"  />}
                                        placeholder="用户名" className="login-input"/>
                             )}
                         </Item>
@@ -55,7 +62,7 @@ class Login extends Component {
                                         { validator: this.validator}
                                     ]
                                 })(
-                                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                <Input prefix={<Icon type="lock"  />}
                                        type="password"
                                        placeholder="密码" className="login-input"/>
                             )}

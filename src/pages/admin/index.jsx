@@ -6,7 +6,7 @@ const { Header, Footer, Sider, Content } = Layout;
 
 export default class Main extends Component {
     render() {
-        return <div>
+        return (
             <Layout>
                 <Sider>Sider</Sider>
                 <Layout>
@@ -15,6 +15,6 @@ export default class Main extends Component {
                     <Footer>Footer</Footer>
                 </Layout>
             </Layout>
-        </div>;
+        )
     }
 }
