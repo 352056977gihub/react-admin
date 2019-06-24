@@ -3,6 +3,8 @@ import { Layout } from 'antd';
 
 import LeftNav from '../../components/left-nav';
 import HeaderMain from '../../components/header-main';
+import {getItem} from '../../utils/storage-tools';
+import {reqValidateUser} from '../../api'
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -15,6 +17,15 @@ export default class Main extends Component {
         console.log(collapsed);
         this.setState({ collapsed });
     };
+    async componentWillMount() {
+        const user =getItem();
+        const id = user.id
+        if( user && id){
+            const res = await reqValidateUser(id);
+            if(res) return ;
+        }
+        this.props.history.replace('/login');
+    }
 
     render() {
         const { collapsed }=this.state ;

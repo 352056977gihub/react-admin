@@ -4,6 +4,7 @@ import { Form, Icon, Input, Button,} from 'antd';
 import {reqLogin} from  '../../api'
 import logo from '../../assets/images/logo.png';
 import './index.less';
+import {setItem} from '../../utils/storage-tools'
 
 const Item = Form.Item;
 
@@ -15,6 +16,7 @@ function Login(props) {
                const { username, password} = values;
                const data = await reqLogin( username, password)
                if(data){
+                   setItem(data);
                    props.history.replace('/');
                }else {
                    props.form.resetFields(['password'])
