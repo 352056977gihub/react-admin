@@ -10,8 +10,7 @@ export default class Category extends Component {
     }
     async componentDidMount() {
         const res = await reqCategory('0');
-        const data = res.map((item,index)=>({name:item.name,key:index}))
-        this.setState({categories:data})
+        this.setState({categories:res})
     }
 
     render() {
@@ -40,7 +39,8 @@ export default class Category extends Component {
                         defaultPageSize: 3,
                         showQuickJumper: true
                     }}
-                />,
+                    rowKey='_id'
+                />
             </Card>
         )
     }

@@ -20,7 +20,10 @@ class HeaderMain extends Component {
         this.title = this.getTitle(this.props);
         this.username = getItem().username;
         const res = await reqWeather();
-        this.setState(res);
+        if(res){
+            this.setState(res);
+        }
+
     }
     componentDidMount() {
         this.timer = setInterval(()=>{

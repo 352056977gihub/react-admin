@@ -22,6 +22,7 @@ class LeftNav extends Component {
     }
     componentWillMount() {
         const {pathname} = this.props.location
+        let isHome = true;
         this.menus = menuList.map((menu)=>{
            const {children} = menu;
            if(children){
@@ -36,16 +37,20 @@ class LeftNav extends Component {
                         >
                             {children.map((item)=>{
                               if(item.key === pathname) {
-                                  this.openKeys = menu.key
+                                  this.openKeys = menu.key;
+                                  isHome = false;
                               }
                               return  this.getMenu(item)
                             })}
                         </SubMenu>
            }else{
+             if(menu.key === pathname) {
+               isHome = false;
+             }
                return this.getMenu(menu)
            }
         })
-        this.selectedKey = pathname
+        this.selectedKey = isHome?'/home':pathname;
     }
 
     render() {

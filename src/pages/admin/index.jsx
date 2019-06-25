@@ -20,50 +20,51 @@ const { Header, Content, Footer, Sider } = Layout;
 export default class Main extends Component {
     state = {
         collapsed: false,
+        isLoading: true,
+        success: false
     };
 
     onCollapse = collapsed => {
         this.setState({ collapsed });
     };
-    async componentWillMount() {
+    async componentDidMount() {
         const user =getItem();
         const id = user._id;
         if( user && id){
             const res = await reqValidateUser(id);
-            if(res) return ;
+            if(res) return this.setState({isLoading:false,success:true})
         }
-        this.props.history.replace('/login');
+        this.setState({isLoading:false,success:false})
     }
-
     render() {
-        const { collapsed }=this.state ;
-        return (
-            <Layout style={{ minHeight: '100vh' }}>
-                <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
-                    <LeftNav  collapsed={ collapsed} />
-                </Sider>
-                <Layout>
-                    <Header style={{ background: '#fff', padding: 0 ,minHeight: 100}} >
-                        <HeaderMain/>
-                    </Header>
-                    <Content style={{ margin: '20px 16px' }}>
-                        <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-                            <Switch>
-                                <Route path='/home' component={Home}/>
-                                <Route path='/category' component={Category}/>
-                                <Route path='/product' component={Product}/>
-                                <Route path='/user' component={User}/>
-                                <Route path='/role' component={Role}/>
-                                <Route path='/charts/bar' component={Bar}/>
-                                <Route path='/charts/line' component={Line}/>
-                                <Route path='/charts/pie' component={Pie}/>
-                                <Redirect to='/home'/>
-                            </Switch>
-                        </div>
-                    </Content>
-                    <Footer style={{ textAlign: 'center' }}>推荐使用谷歌浏览器</Footer>
-                </Layout>
+        const { collapsed ,isLoading ,success}=this.state ;
+        if(isLoading) return null;
+        return success ?  <Layout style={{ minHeight: '100vh' }}>
+            <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
+                <LeftNav  collapsed={ collapsed} />
+            </Sider>
+            <Layout>
+                <Header style={{ background: '#fff', padding: 0 ,minHeight: 100}} >
+                    <HeaderMain/>
+                </Header>
+                <Content style={{ margin: '20px 16px' }}>
+                    <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+                        <Switch>
+                            <Route path='/home' component={Home}/>
+                            <Route path='/category' component={Category}/>
+                            <Route path='/product' component={Product}/>
+                            <Route path='/user' component={User}/>
+                            <Route path='/role' component={Role}/>
+                            <Route path='/charts/bar' component={Bar}/>
+                            <Route path='/charts/line' component={Line}/>
+                            <Route path='/charts/pie' component={Pie}/>
+                            <Redirect  to='/home'/>
+                        </Switch>
+                    </div>
+                </Content>
+                <Footer style={{ textAlign: 'center' }}>推荐使用谷歌浏览器</Footer>
             </Layout>
-        );
+        </Layout>: <Redirect to='/login'/>
+
     }
 }
