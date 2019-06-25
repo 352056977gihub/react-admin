@@ -12,9 +12,9 @@ export default function ajax( url, data={}, method='GET') {
        .then((res)=>{
            const data = res.data
            if(data.status===0){
-               return data.data
+               return data.data || {}
            }else{
-               message.error(data.msg,2)
+             message.error(data.msg,2)
            }
        })
        .catch(()=> {
